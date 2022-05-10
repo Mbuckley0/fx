@@ -12,7 +12,7 @@ describe Fx::Statements::Trigger, :db do
       expect(database).to have_received(:create_trigger).
         with(definition.to_sql)
       expect(Fx::Definition).to have_received(:new).
-        with(name: :test, version: 1, type: "trigger")
+        with(name: :test, version: 1, type: "trigger", options: { folder: 'db/triggers' })
     end
 
     it "allows creating a trigger with a specific version" do
@@ -24,7 +24,7 @@ describe Fx::Statements::Trigger, :db do
       expect(database).to have_received(:create_trigger).
         with(definition.to_sql)
       expect(Fx::Definition).to have_received(:new).
-        with(name: :test, version: 2, type: "trigger")
+        with(name: :test, version: 2, type: "trigger", options: { folder: 'db/triggers' })
     end
 
     it "raises an error if both arguments are set" do
@@ -68,8 +68,9 @@ describe Fx::Statements::Trigger, :db do
       )
       expect(Fx::Definition).to have_received(:new).with(
         name: :test,
-        version: 3,
+        version: 3, 
         type: "trigger",
+        options: { folder: 'db/triggers' }
       )
     end
 

@@ -12,7 +12,7 @@ describe Fx::Statements::Function, :db do
       expect(database).to have_received(:create_function).
         with(definition.to_sql)
       expect(Fx::Definition).to have_received(:new).
-        with(name: :test, version: 1)
+        with(name: :test, version: 1, options: { folder: 'db/functions' })
     end
 
     it "allows creating a function with a specific version" do
@@ -24,7 +24,7 @@ describe Fx::Statements::Function, :db do
       expect(database).to have_received(:create_function).
         with(definition.to_sql)
       expect(Fx::Definition).to have_received(:new).
-        with(name: :test, version: 2)
+        with(name: :test, version: 2, options: { folder: 'db/functions' })
     end
 
     it "raises an error if both arguments are nil" do
@@ -61,7 +61,7 @@ describe Fx::Statements::Function, :db do
       expect(database).to have_received(:update_function).
         with(:test, definition.to_sql)
       expect(Fx::Definition).to have_received(:new).
-        with(name: :test, version: 3)
+        with(name: :test, version: 3, options: { folder: 'db/functions' })
     end
 
     it "updates a function from a text definition" do

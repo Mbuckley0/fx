@@ -29,6 +29,7 @@ module Fx
       #
       def create_trigger(name, options = {})
         version = options[:version]
+        folder = options.fetch(:folder, "db/#{DEFINITION_TYPE.pluralize}")
         _on = options[:on]
         sql_definition = options[:sql_definition]
 
@@ -48,6 +49,9 @@ module Fx
           name: name,
           version: version,
           type: DEFINITION_TYPE,
+          options: {
+            folder: folder
+          }
         ).to_sql
 
         Fx.database.create_trigger(sql_definition)
@@ -106,6 +110,7 @@ module Fx
       #
       def update_trigger(name, options = {})
         version = options[:version]
+        folder = options.fetch(:folder, "db/#{DEFINITION_TYPE.pluralize}")
         on = options[:on]
         sql_definition = options[:sql_definition]
         revert_to_version = options[:revert_to_version]
@@ -133,6 +138,9 @@ module Fx
           name: name,
           version: version,
           type: DEFINITION_TYPE,
+          options: {
+            folder: folder
+          }
         ).to_sql
 
         Fx.database.update_trigger(

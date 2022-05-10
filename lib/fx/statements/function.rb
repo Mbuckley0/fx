@@ -31,6 +31,7 @@ module Fx
       #
       def create_function(name, options = {})
         version = options.fetch(:version, 1)
+        folder = options.fetch(:folder, 'db/functions')
         sql_definition = options[:sql_definition]
 
         if version.nil? && sql_definition.nil?
@@ -40,7 +41,13 @@ module Fx
           )
         end
         sql_definition = sql_definition.strip_heredoc if sql_definition
-        sql_definition ||= Fx::Definition.new(name: name, version: version).to_sql
+        sql_definition ||= Fx::Definition.new(
+          name: name,
+          version: version,
+          options: {
+            folder: folder
+          }
+      ).to_sql
 
         Fx.database.create_function(sql_definition)
       end
@@ -92,6 +99,7 @@ module Fx
       #
       def update_function(name, options = {})
         version = options[:version]
+        folder = options.fetch(:folder, 'db/functions')
         sql_definition = options[:sql_definition]
         revert_to_version = options[:revert_to_version]
 
@@ -106,6 +114,9 @@ module Fx
         sql_definition ||= Fx::Definition.new(
           name: name,
           version: version,
+          options: {
+            folder: folder
+          }
         ).to_sql
 
         Fx.database.update_function(name, sql_definition)
