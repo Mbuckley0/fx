@@ -1,10 +1,11 @@
 module Fx
   # @api private
   class Definition
-    def initialize(name:, version:, type: "function")
+    def initialize(name:, version:, type: "function", options: {})
       @name = name
       @version = version.to_i
       @type = type
+      @folder = options.fetch(:folder, "db/#{type.pluralize}")
     end
 
     def to_sql
@@ -20,7 +21,7 @@ module Fx
     end
 
     def path
-      @_path ||= File.join("db", @type.pluralize, filename)
+      @_path ||= File.join(@folder, filename)
     end
 
     def version
